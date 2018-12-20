@@ -9,6 +9,24 @@ void stack_int(stack_t **head)
 {
 	*head = NULL;
 	glob.top = head;
+	glob.buf = NULL;
+}
+/**
+ * free_stack - free all malloc'ed memory of the stack
+ */
+void free_stack(void)
+{
+	stack_t *tmp1, *tmp2;
+
+	tmp1 = *(glob.top);
+	while (tmp1)
+	{
+		tmp2 = tmp1->next;
+		free(tmp1);
+		tmp1 = tmp2;
+	}
+	if (glob.buf != NULL)
+		free(glob.buf);
 }
 /**
  * main - interpret monty byte code files
@@ -24,10 +42,10 @@ int main(int argc, char *argv[])
 	stack_int(&head);
 	if (argc != 2)
 	{
-		dprintf(STDERR_FILENO,"Usage: monty file\n");
+		dprintf(STDERR_FILENO, "Usage: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	filename = argv[1];
 	read_file(filename, &head);
-	return (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }

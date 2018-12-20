@@ -2,18 +2,17 @@
 
 /**
  * read_file - reads line from file and executes the instructions
- * filename: name of file
+ * @filename: name of file
+ * @stack: stack
  * Return: EXIT_SUCCESS or EXIT_FAILURE
  */
 void read_file(const char *filename, stack_t **stack)
 {
 	FILE *file;
-	char *line;
-	char *op = NULL;
-	size_t size = 0;
-	int line_number = 0, read = 0;
+	char *op = NULL, *line = NULL;
+	size_t size;
+	int line_number = 0;
 
-	line = NULL;
 	if (!filename)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
@@ -25,17 +24,25 @@ void read_file(const char *filename, stack_t **stack)
 		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	while ((read = getline(&line, &size, file)) != -1)
+	atexit(free_stack);
+	while (getline(&line, &size, file) != -1)
 	{
-		op = strtok(line, DELIMS);
+		glob.buf = line;
 		line_number++;
+		op = strtok(line, DELIMS);
+		if (op == NULL || op[0] == '#')
+			continue;
 		if (op)
 			execute_op(stack, op, line_number);
 	}
-	free(line);
 	fclose(file);
 }
-
+/**
+ * execute_op - execute the opcode
+ * @stack: stack
+ * @op: opcode
+ * @line_number: line number of instruction
+ */
 void execute_op(stack_t **stack, char *op, unsigned int line_number)
 {
 	int i;
@@ -66,7 +73,7 @@ int only_digit(char *num)
 
 	if (!num)
 		return (FALSE);
-	for(i = 0; num[i] != '\0'; i++)
+	for (i = 0; num[i] != '\0'; i++)
 	{
 		if (isdigit(num[i]) == FALSE)
 			return (FALSE);

@@ -1,7 +1,7 @@
 #include "monty.h"
 
 /**
- * pall - prints all the values on the stack, starting from the top
+ * _pall - prints all the values on the stack, starting from the top
  * @stack: pointer to pointer to the top of stack
  * @line_number: line_number of instructions
  * Return: Nothing
@@ -19,7 +19,7 @@ void _pall(stack_t **stack, unsigned int line_number)
 	}
 }
 /**
- * push - pushes an element to the top of the stack
+ * _push - pushes an element to the top of the stack
  * @stack: pointer to pointer to the top of stack
  * @line_number: line_number of instructions
  * Return: pointer to newly added element
@@ -41,7 +41,7 @@ void _push(stack_t **stack, unsigned int line_number)
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: unknown instruction push", line_number);
+		dprintf(STDERR_FILENO, "L%u: unknown instruction push\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = atoi(op_num);
