@@ -36,12 +36,14 @@ void _push(stack_t **stack, unsigned int line_number)
 		if (!new_node)
 		{
 			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			free_stack();
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: unknown instruction push\n", line_number);
+		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", line_number);
+		free_stack();
 		exit(EXIT_FAILURE);
 	}
 	new_node->n = atoi(op_num);
@@ -58,3 +60,61 @@ void _push(stack_t **stack, unsigned int line_number)
 		*stack = new_node;
 	}
 }
+/**
+ * _pint - prints the value at the top of the stack
+ * @stack: pointer to pointer to the top of stack
+ * @line_number: line_number of instructions
+ */
+void _pint(stack_t **stack, unsigned int line_number)
+{
+	if (!stack || !*stack)
+	{
+		dprintf(STDERR_FILENO, "L%u: can't pint, stack empty\n", line_number);
+		free_stack();
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*stack)->n);
+}
+/**
+ * _pop - removes the top element of the stack
+ * @stack: pointer to pointer to the top of stack
+ * @line_number: line_number of instructions
+ */
+void _pop(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp;
+
+	if (!stack || !*stack)
+	{
+		dprintf(STDERR_FILENO, "L%u: can't pop an empty stack\n", line_number);
+		free_stack();
+		exit(EXIT_FAILURE);
+	}
+	tmp = *stack;
+	*stack = (*stack)->next;
+	free(tmp);
+}
+/**
+ * _swap - swaps the top two element of the stack
+ * @stack: pointer to pointer to the top of stack
+ * @line_number: line_number of instructions
+ */
+void _swap(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp;
+
+	if(!*stack || !((*stack)->next))
+	{
+		dprintf(STDERR_FILENO, "L%u: can't swap too short\n", line_number);
+		free_stack();
+		exit(EXIT_FAILURE);
+	}
+	tmp = *stack->next;
+	(*stack)->next = tmp->next;
+	(*stack)->prev = tmp;
+	tmp->prev = NULL;
+	if (tmp->next)
+		tmp->next->prev = *stack;
+	tmp->next = *stack;
+	(*stack) = tmp;
+}	
