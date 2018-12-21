@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 {
 	char *filename;
 	stack_t *head = NULL;
-	
+
 	if (argc != 2)
 	{
 		dprintf(STDERR_FILENO, "Usage: monty file\n");

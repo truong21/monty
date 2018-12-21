@@ -43,6 +43,7 @@ typedef struct instruction_s
 
 /**
  * struct glob_s - global variable
+ * @fp: pointer to file
  * @stack: pointer to top of stack
  * @buf: line buffer storing getline string
  */
