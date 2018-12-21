@@ -18,7 +18,7 @@ void read_file(const char *filename, stack_t **stack)
 		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	file = fopen(filename, "r");
+	glob.fp = file = fopen(filename, "r");
 	if (!file)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
@@ -26,7 +26,7 @@ void read_file(const char *filename, stack_t **stack)
 	}
 	while (getline(&line, &size, file) != -1)
 	{
-		glob->buf = line;
+		glob.buf = line;
 		line_number++;
 		op = strtok(line, DELIMS);
 		if (op == NULL || op[0] == '#')
@@ -34,7 +34,6 @@ void read_file(const char *filename, stack_t **stack)
 		if (op)
 			execute_op(stack, op, line_number);
 	}
-	fclose(file);
 }
 /**
  * execute_op - execute the opcode
@@ -67,7 +66,7 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 	if (strlen(op) != 0 && op[0] != '#')
 	{
 		dprintf(STDERR_FILENO, "L%u: unknown instruction %s\n", line_number, op);
-		free_stack();
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 }

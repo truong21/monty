@@ -11,13 +11,13 @@ void _mod(stack_t **stack, unsigned int line_number)
 	if (!*stack || !((*stack)->next))
 	{
 		dprintf(STDERR_FILENO, "L%u: can't mod, stack too short\n", line_number);
-		free_stack();
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 	if ((*stack)->n == 0)
 	{
 		dprintf(STDERR_FILENO, "L%u: division by zero\n", line_number);
-		free_stack();
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 	(*stack)->next->n %= (*stack)->n;
@@ -33,7 +33,7 @@ void _pchar(stack_t **stack, unsigned int line_number)
 	if (!stack || !*stack)
 	{
 		dprintf(STDERR_FILENO, "L%u: can't pint, stack empty\n", line_number);
-		free_stack();
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 	if (((*stack)->n > 64 && (*stack)->n < 91) ||
@@ -46,7 +46,7 @@ void _pchar(stack_t **stack, unsigned int line_number)
 	{
 		dprintf(STDERR_FILENO, "L%u: can't pchar, value out of range\n",
 									line_number);
-		free_stack();
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
 }

@@ -48,16 +48,15 @@ typedef struct instruction_s
  */
 typedef struct glob_s
 {
+	FILE *fp;
 	stack_t **stack;
 	char *buf;
 } glob_t;
 
-extern glob_t *glob;
-glob_t *glob;
+extern glob_t glob;
 
 /* monty.c */
-void stack_int(stack_t **head);
-void free_stack(void);
+void free_stack(stack_t **stack);
 
 /* process_file.c */
 void read_file(const char *filename, stack_t **stack);
