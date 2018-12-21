@@ -3,6 +3,7 @@
 glob_t glob = {NULL, NULL, NULL};
 /**
  * free_stack - free all malloc'ed memory of the stack
+ * @stack: pointer to pointer to stack
  */
 void free_stack(stack_t **stack)
 {
