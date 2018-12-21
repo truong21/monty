@@ -62,7 +62,7 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 	}
 	if (strlen(op) != 0 && op[0] != '#')
 	{
-		dprintf("l%u: unknown instruction %s\n", line_number, op);
+		dprintf(STDERR_FILENO, "L%u: unknown instruction %s\n", line_number, op);
 		free_stack();
 		exit(EXIT_FAILURE);
 	}
