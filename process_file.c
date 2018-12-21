@@ -26,7 +26,7 @@ void read_file(const char *filename, stack_t **stack)
 	}
 	while (getline(&line, &size, file) != -1)
 	{
-		glob.buf = line;
+		glob->buf = line;
 		line_number++;
 		op = strtok(line, DELIMS);
 		if (op == NULL || op[0] == '#')
@@ -59,6 +59,12 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 			ops[i].f(stack, line_number);
 			return;
 		}
+	}
+	if (strlen(op) != 0 && op[0] != '#')
+	{
+		dprintf("l%u: unknown instruction %s\n", line_number, op);
+		free_stack();
+		exit(EXIT_FAILURE);
 	}
 }
 

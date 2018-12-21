@@ -37,22 +37,23 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 /**
  * struct glob_s - global variable
- * @top: pointer to pointer to top of stiack
+ * @stack: pointer to top of stack
  * @buf: line buffer storing getline string
  */
 typedef struct glob_s
 {
-	stack_t **top;
+	stack_t **stack;
 	char *buf;
 } glob_t;
 
-extern glob_t glob;
+extern glob_t *glob;
+glob_t *glob;
 
 /* monty.c */
 void stack_int(stack_t **head);
