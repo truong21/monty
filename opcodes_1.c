@@ -109,7 +109,7 @@ void _swap(stack_t **stack, unsigned int line_number)
 		free_stack();
 		exit(EXIT_FAILURE);
 	}
-	tmp = *stack->next;
+	tmp = (*stack)->next;
 	(*stack)->next = tmp->next;
 	(*stack)->prev = tmp;
 	tmp->prev = NULL;
