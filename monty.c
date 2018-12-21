@@ -47,5 +47,6 @@ int main(int argc, char *argv[])
 	}
 	filename = argv[1];
 	read_file(filename, &head);
-	exit(EXIT_SUCCESS);
+	free_stack();
+	return (EXIT_SUCCESS);
 }
