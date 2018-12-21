@@ -15,13 +15,13 @@ void read_file(const char *filename, stack_t **stack)
 
 	if (!filename)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 	glob.fp = file = fopen(filename, "r");
 	if (!file)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 	while (getline(&line, &size, file) != -1)
@@ -78,11 +78,13 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
  */
 int only_digit(char *num)
 {
-	int i;
+	int i = 0;
 
 	if (!num)
 		return (FALSE);
-	for (i = 0; num[i] != '\0'; i++)
+	if (num[0] == '-')
+		i++;
+	for (; num[i] != '\0'; i++)
 	{
 		if (isdigit(num[i]) == FALSE)
 			return (FALSE);
