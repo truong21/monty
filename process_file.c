@@ -24,7 +24,6 @@ void read_file(const char *filename, stack_t **stack)
 		dprintf(STDERR_FILENO, "Error: Can't open file, %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	atexit(free_stack);
 	while (getline(&line, &size, file) != -1)
 	{
 		glob.buf = line;
@@ -48,9 +47,10 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 	int i;
 
 	instruction_t ops[] = {
-		{"push", _push},
-		{"pall", _pall},
-		{NULL, NULL},
+		{"push", _push}, {"pall", _pall},
+		{"pint", _pint}, {"pop", _pop},
+		{"swap", _swap}, {"add", _add},
+		{"nop", _nop}, {NULL, NULL},
 	};
 	for (i = 0; ops[i].opcode; i++)
 	{
