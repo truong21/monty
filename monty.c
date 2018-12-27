@@ -1,6 +1,6 @@
 #include "monty.h"
 
-glob_t glob = {NULL, NULL, NULL};
+glob_t glob = {NULL, NULL, NULL, 0};
 /**
  * free_stack - free all malloc'ed memory of the stack
  * @stack: pointer to pointer to stack

@@ -63,6 +63,16 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 			return;
 		}
 	}
+	if (strcmp(op, "stack") == 0)
+	{
+		glob.queue = 0;
+		return;
+	}
+	else if (strcmp(op, "queue") == 0)
+	{
+		glob.queue = 1;
+		return;
+	}
 	if (strlen(op) != 0 && op[0] != '#')
 	{
 		dprintf(STDERR_FILENO, "L%u: unknown instruction %s\n", line_number, op);
@@ -70,7 +80,6 @@ void execute_op(stack_t **stack, char *op, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 }
-
 /**
  * only_digit - check if every character in a string is a digit
  * @num: string to check
@@ -91,4 +100,86 @@ int only_digit(char *num)
 	}
 
 	return (TRUE);
+}
+/**
+ * _push_stack - push new node into stack
+ * @stack: pointer to ponter to the stack
+ * @line_number: line number of the instruction file
+ */
+void _push_stack(stack_t **stack, unsigned int line_number)
+{
+	stack_t *new_node;
+	char *op_num;
+
+	op_num = strtok(NULL, DELIMS);
+	if (only_digit(op_num) == TRUE)
+	{
+		new_node = malloc(sizeof(stack_t));
+		if (!new_node)
+		{
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			free_stack(stack);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", line_number);
+		free_stack(stack);
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = atoi(op_num);
+	new_node->prev = NULL;
+	if (!*stack)
+	{
+		new_node->next = *stack;
+		*stack = new_node;
+	}
+	else
+	{
+		new_node->next = *stack;
+		(*stack)->prev = new_node;
+		*stack = new_node;
+	}
+}
+/**
+ * _push_queue - adds a new node at the end of a dlistint_t list
+ * @stack: pointer to pointer to stack
+ * @line_number: line number of the instruction file
+ */
+void _push_queue(stack_t **stack, unsigned int line_number)
+{
+	stack_t *new_node, *tmp;
+	char *op_num;
+
+	op_num = strtok(NULL, DELIMS);
+	if (only_digit(op_num) == TRUE)
+	{
+		new_node = malloc(sizeof(stack_t));
+		if (!new_node)
+		{
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			free_stack(stack);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", line_number);
+		free_stack(stack);
+		exit(EXIT_FAILURE);
+	}
+	new_node->n = atoi(op_num);
+	new_node->next = NULL;
+	new_node->prev = NULL;
+	if (*stack == NULL)
+		*stack = new_node;
+	else
+	{
+		tmp = *stack;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		new_node->prev = tmp;
+		tmp->next = new_node;
+	}
 }

@@ -26,39 +26,10 @@ void _pall(stack_t **stack, unsigned int line_number)
  */
 void _push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *new_node;
-	char *op_num;
-
-	op_num = strtok(NULL, DELIMS);
-	if (only_digit(op_num) == TRUE)
-	{
-		new_node = malloc(sizeof(stack_t));
-		if (!new_node)
-		{
-			dprintf(STDERR_FILENO, "Error: malloc failed\n");
-			free_stack(stack);
-			exit(EXIT_FAILURE);
-		}
-	}
+	if (glob.queue == 0)
+		_push_stack(stack, line_number);
 	else
-	{
-		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", line_number);
-		free_stack(stack);
-		exit(EXIT_FAILURE);
-	}
-	new_node->n = atoi(op_num);
-	new_node->prev = NULL;
-	if (!*stack)
-	{
-		new_node->next = *stack;
-		*stack = new_node;
-	}
-	else
-	{
-		new_node->next = *stack;
-		(*stack)->prev = new_node;
-		*stack = new_node;
-	}
+		_push_queue(stack, line_number);
 }
 /**
  * _pint - prints the value at the top of the stack

@@ -52,6 +52,7 @@ typedef struct glob_s
 	FILE *fp;
 	stack_t **stack;
 	char *buf;
+	int queue;
 } glob_t;
 
 extern glob_t glob;
@@ -63,6 +64,8 @@ void free_stack(stack_t **stack);
 void read_file(const char *filename, stack_t **stack);
 void execute_op(stack_t **stack, char *op, unsigned int line_number);
 int only_digit(char *num);
+void _push_stack(stack_t **stack, unsigned int line_number);
+void _push_queue(stack_t **stack, unsigned int line_number);
 
 /* opcodes_1.c */
 void _pall(stack_t **stack, unsigned int line_number);
